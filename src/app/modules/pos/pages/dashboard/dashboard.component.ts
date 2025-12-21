@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ApiService } from '../../../../core/services/api.service';
-import { Product, Category, SaleItem } from '../../../../core/models/organization.model';
-import { User } from '../../../../core/models/user.model';
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { AuthService } from "../../../../core/services/auth.service";
+import { ApiService } from "../../../../core/services/api.service";
+import {
+  Product,
+  Category,
+  SaleItem,
+} from "../../../../core/models/organization.model";
+import { User } from "../../../../core/models/user.model";
 
 @Component({
-  selector: 'app-pos-dashboard',
+  selector: "app-pos-dashboard",
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
@@ -63,43 +67,75 @@ import { User } from '../../../../core/models/user.model';
               (click)="addToCart(product)"
               class="bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-lg hover:scale-105 transition transform"
             >
-              <div class="bg-slate-100 rounded-lg h-40 mb-3 flex items-center justify-center text-4xl">
+              <div
+                class="bg-slate-100 rounded-lg h-40 mb-3 flex items-center justify-center text-4xl"
+              >
                 📦
               </div>
-              <h3 class="font-semibold text-slate-900 text-sm truncate">{{ product.name }}</h3>
+              <h3 class="font-semibold text-slate-900 text-sm truncate">
+                {{ product.name }}
+              </h3>
               <p class="text-xs text-slate-600">SKU: {{ product.sku }}</p>
-              <p class="text-blue-600 font-bold mt-2">{{ product.price | currency }}</p>
-              <p [class]="product.stock > 0 ? 'text-green-600' : 'text-red-600'" class="text-xs font-semibold">
-                {{ product.stock > 0 ? product.stock + ' in stock' : 'Out of stock' }}
+              <p class="text-blue-600 font-bold mt-2">
+                {{ product.price | currency }}
+              </p>
+              <p
+                [class]="product.stock > 0 ? 'text-green-600' : 'text-red-600'"
+                class="text-xs font-semibold"
+              >
+                {{
+                  product.stock > 0
+                    ? product.stock + " in stock"
+                    : "Out of stock"
+                }}
               </p>
             </div>
           </div>
 
-          <div *ngIf="filteredProducts.length === 0" class="text-center py-12 text-slate-600">
+          <div
+            *ngIf="filteredProducts.length === 0"
+            class="text-center py-12 text-slate-600"
+          >
             <p class="text-lg">No products found</p>
           </div>
         </div>
       </div>
 
       <!-- Right: Cart -->
-      <div class="w-80 flex flex-col bg-white rounded-lg shadow overflow-hidden">
+      <div
+        class="w-80 flex flex-col bg-white rounded-lg shadow overflow-hidden"
+      >
         <!-- Cart Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4">
+        <div
+          class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4"
+        >
           <h2 class="text-xl font-bold">🛒 Cart</h2>
-          <p class="text-sm text-blue-100" *ngIf="cartItems.length > 0">{{ cartItems.length }} item(s)</p>
+          <p class="text-sm text-blue-100" *ngIf="cartItems.length > 0">
+            {{ cartItems.length }} item(s)
+          </p>
         </div>
 
         <!-- Cart Items -->
         <div class="flex-1 overflow-y-auto p-4 space-y-3">
-          <div *ngIf="cartItems.length === 0" class="text-center text-slate-600 py-8">
+          <div
+            *ngIf="cartItems.length === 0"
+            class="text-center text-slate-600 py-8"
+          >
             Cart is empty
           </div>
 
-          <div *ngFor="let item of cartItems; let i = index" class="border border-slate-200 rounded-lg p-3 bg-slate-50">
+          <div
+            *ngFor="let item of cartItems; let i = index"
+            class="border border-slate-200 rounded-lg p-3 bg-slate-50"
+          >
             <div class="flex items-start justify-between mb-2">
               <div class="flex-1">
-                <p class="font-semibold text-slate-900 text-sm">{{ item.productName }}</p>
-                <p class="text-xs text-slate-600">{{ item.price | currency }} each</p>
+                <p class="font-semibold text-slate-900 text-sm">
+                  {{ item.productName }}
+                </p>
+                <p class="text-xs text-slate-600">
+                  {{ item.price | currency }} each
+                </p>
               </div>
               <button
                 (click)="removeFromCart(i)"
@@ -131,9 +167,13 @@ import { User } from '../../../../core/models/user.model';
               </button>
             </div>
 
-            <div class="mt-2 pt-2 border-t border-slate-200 flex justify-between">
+            <div
+              class="mt-2 pt-2 border-t border-slate-200 flex justify-between"
+            >
               <span class="text-xs text-slate-600">Subtotal:</span>
-              <span class="font-semibold text-slate-900">{{ item.price * item.quantity | currency }}</span>
+              <span class="font-semibold text-slate-900">{{
+                item.price * item.quantity | currency
+              }}</span>
             </div>
           </div>
         </div>
@@ -153,7 +193,9 @@ import { User } from '../../../../core/models/user.model';
             />
             <div class="text-right">
               <p class="text-xs text-slate-600">Discount</p>
-              <p class="font-bold text-slate-900">-{{ discountAmount | currency }}</p>
+              <p class="font-bold text-slate-900">
+                -{{ discountAmount | currency }}
+              </p>
             </div>
           </div>
 
@@ -170,7 +212,9 @@ import { User } from '../../../../core/models/user.model';
             />
             <div class="text-right">
               <p class="text-xs text-slate-600">Tax</p>
-              <p class="font-bold text-slate-900">+{{ taxAmount | currency }}</p>
+              <p class="font-bold text-slate-900">
+                +{{ taxAmount | currency }}
+              </p>
             </div>
           </div>
 
@@ -178,7 +222,9 @@ import { User } from '../../../../core/models/user.model';
           <div class="bg-slate-50 rounded-lg p-3 space-y-2">
             <div class="flex justify-between text-sm">
               <span class="text-slate-600">Subtotal:</span>
-              <span class="font-semibold text-slate-900">{{ subtotal | currency }}</span>
+              <span class="font-semibold text-slate-900">{{
+                subtotal | currency
+              }}</span>
             </div>
             <div class="flex justify-between text-lg font-bold border-t pt-2">
               <span class="text-slate-900">Total:</span>
@@ -224,17 +270,27 @@ import { User } from '../../../../core/models/user.model';
       </div>
 
       <!-- Receipt Modal -->
-      <div *ngIf="showReceipt" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 max-h-screen overflow-y-auto">
+      <div
+        *ngIf="showReceipt"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+      >
+        <div
+          class="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 max-h-screen overflow-y-auto"
+        >
           <div class="text-center mb-6 pb-4 border-b-2 border-slate-200">
             <h3 class="text-2xl font-bold text-slate-900">Receipt</h3>
             <p class="text-sm text-slate-600">{{ getCurrentDate() }}</p>
           </div>
 
           <div class="space-y-4 mb-6">
-            <div *ngFor="let item of cartItems" class="flex justify-between text-sm">
+            <div
+              *ngFor="let item of cartItems"
+              class="flex justify-between text-sm"
+            >
               <span class="text-slate-700">{{ item.productName }}</span>
-              <span class="font-semibold text-slate-900">{{ item.price * item.quantity | currency }}</span>
+              <span class="font-semibold text-slate-900">{{
+                item.price * item.quantity | currency
+              }}</span>
             </div>
           </div>
 
@@ -243,7 +299,10 @@ import { User } from '../../../../core/models/user.model';
               <span class="text-slate-600">Subtotal:</span>
               <span>{{ subtotal | currency }}</span>
             </div>
-            <div class="flex justify-between text-sm" *ngIf="discountAmount > 0">
+            <div
+              class="flex justify-between text-sm"
+              *ngIf="discountAmount > 0"
+            >
               <span class="text-slate-600">Discount:</span>
               <span class="text-red-600">-{{ discountAmount | currency }}</span>
             </div>
@@ -257,11 +316,15 @@ import { User } from '../../../../core/models/user.model';
             </div>
             <div class="flex justify-between text-sm mt-4">
               <span class="text-slate-600">Payment Method:</span>
-              <span class="font-semibold text-slate-900">{{ paymentMethod }}</span>
+              <span class="font-semibold text-slate-900">{{
+                paymentMethod
+              }}</span>
             </div>
           </div>
 
-          <div class="mt-6 pt-6 border-t-2 border-slate-200 text-center text-xs text-slate-600">
+          <div
+            class="mt-6 pt-6 border-t-2 border-slate-200 text-center text-xs text-slate-600"
+          >
             <p>Thank you for your purchase!</p>
             <p>Keep your receipt for warranty & returns</p>
           </div>
@@ -276,13 +339,15 @@ import { User } from '../../../../core/models/user.model';
       </div>
     </div>
   `,
-  styles: [`
-    :host {
-      display: block;
-      height: 100vh;
-      overflow: hidden;
-    }
-  `]
+  styles: [
+    `
+      :host {
+        display: block;
+        height: 100vh;
+        overflow: hidden;
+      }
+    `,
+  ],
 })
 export class PosDashboardComponent implements OnInit {
   products: Product[] = [];
@@ -291,13 +356,13 @@ export class PosDashboardComponent implements OnInit {
   currentUser: User | null = null;
 
   // Filters
-  searchQuery = '';
+  searchQuery = "";
   selectedCategory: string | null = null;
 
   // Cart values
   discount = 0;
   taxRate = 0;
-  paymentMethod = 'CASH';
+  paymentMethod = "CASH";
   showReceipt = false;
 
   // Calculated values
@@ -307,18 +372,21 @@ export class PosDashboardComponent implements OnInit {
   total = 0;
 
   get filteredProducts(): Product[] {
-    return this.products.filter(p => {
-      const matchesSearch = p.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                            p.sku.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                            (p.barcode?.toLowerCase().includes(this.searchQuery.toLowerCase()) || false);
-      const matchesCategory = !this.selectedCategory || p.categoryId === this.selectedCategory;
+    return this.products.filter((p) => {
+      const matchesSearch =
+        p.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        p.sku.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        p.barcode?.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        false;
+      const matchesCategory =
+        !this.selectedCategory || p.categoryId === this.selectedCategory;
       return matchesSearch && matchesCategory;
     });
   }
 
   constructor(
     private authService: AuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
   ) {}
 
   ngOnInit(): void {
@@ -334,8 +402,8 @@ export class PosDashboardComponent implements OnInit {
 
     this.apiService.getProducts(this.currentUser.organizationId).subscribe({
       next: (products) => {
-        this.products = products.filter(p => p.isActive && p.stock > 0);
-      }
+        this.products = products.filter((p) => p.isActive && p.stock > 0);
+      },
     });
   }
 
@@ -344,8 +412,8 @@ export class PosDashboardComponent implements OnInit {
 
     this.apiService.getCategories(this.currentUser.organizationId).subscribe({
       next: (categories) => {
-        this.categories = categories.filter(c => c.isActive);
-      }
+        this.categories = categories.filter((c) => c.isActive);
+      },
     });
   }
 
@@ -354,7 +422,9 @@ export class PosDashboardComponent implements OnInit {
   }
 
   addToCart(product: Product): void {
-    const existingItem = this.cartItems.find(item => item.productId === product.id);
+    const existingItem = this.cartItems.find(
+      (item) => item.productId === product.id,
+    );
 
     if (existingItem) {
       if (existingItem.quantity < product.stock) {
@@ -366,7 +436,7 @@ export class PosDashboardComponent implements OnInit {
         productName: product.name,
         quantity: 1,
         price: product.price,
-        discount: 0
+        discount: 0,
       });
     }
 
@@ -393,7 +463,10 @@ export class PosDashboardComponent implements OnInit {
   }
 
   calculateTotals(): void {
-    this.subtotal = this.cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    this.subtotal = this.cartItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
     this.discountAmount = (this.subtotal * this.discount) / 100;
     const afterDiscount = this.subtotal - this.discountAmount;
     this.taxAmount = (afterDiscount * this.taxRate) / 100;
@@ -408,7 +481,8 @@ export class PosDashboardComponent implements OnInit {
   }
 
   completeSale(): void {
-    if (this.cartItems.length === 0 || !this.currentUser?.organizationId) return;
+    if (this.cartItems.length === 0 || !this.currentUser?.organizationId)
+      return;
 
     const sale: Partial<any> = {
       items: this.cartItems,
@@ -416,30 +490,36 @@ export class PosDashboardComponent implements OnInit {
       tax: this.taxAmount,
       discount: this.discountAmount,
       total: this.total,
-      paymentMethod: this.paymentMethod as 'CASH' | 'CARD' | 'CHECK' | 'DIGITAL_WALLET',
-      status: 'COMPLETED'
+      paymentMethod: this.paymentMethod as
+        | "CASH"
+        | "CARD"
+        | "CHECK"
+        | "DIGITAL_WALLET",
+      status: "COMPLETED",
     };
 
-    this.apiService.createSale(this.currentUser.organizationId, sale).subscribe({
-      next: () => {
-        // Show success message
-        alert('Sale completed successfully!');
-        this.clearCart();
-        this.showReceipt = false;
-      },
-      error: () => {
-        alert('Error completing sale');
-      }
-    });
+    this.apiService
+      .createSale(this.currentUser.organizationId, sale)
+      .subscribe({
+        next: () => {
+          // Show success message
+          alert("Sale completed successfully!");
+          this.clearCart();
+          this.showReceipt = false;
+        },
+        error: () => {
+          alert("Error completing sale");
+        },
+      });
   }
 
   getCurrentDate(): string {
-    return new Date().toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   }
 }

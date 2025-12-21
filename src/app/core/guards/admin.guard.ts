@@ -1,16 +1,16 @@
-import { inject } from '@angular/core';
-import { Router, CanActivateFn } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { inject } from "@angular/core";
+import { Router, CanActivateFn } from "@angular/router";
+import { AuthService } from "../services/auth.service";
 
 export const adminGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const user = authService.getCurrentUser();
 
-  if (user?.role === 'ADMIN') {
+  if (user?.role === "ADMIN") {
     return true;
   }
 
-  router.navigate(['/access-denied']);
+  router.navigate(["/access-denied"]);
   return false;
 };

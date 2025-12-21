@@ -1,13 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ApiService } from '../../../../core/services/api.service';
-import { Category } from '../../../../core/models/organization.model';
-import { User } from '../../../../core/models/user.model';
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import { AuthService } from "../../../../core/services/auth.service";
+import { ApiService } from "../../../../core/services/api.service";
+import { Category } from "../../../../core/models/organization.model";
+import { User } from "../../../../core/models/user.model";
 
 @Component({
-  selector: 'app-categories',
+  selector: "app-categories",
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
@@ -16,7 +21,9 @@ import { User } from '../../../../core/models/user.model';
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-3xl font-bold text-slate-900">Categories</h1>
-          <p class="text-slate-600 mt-2">Organize your products into categories</p>
+          <p class="text-slate-600 mt-2">
+            Organize your products into categories
+          </p>
         </div>
         <button
           (click)="showAddCategoryForm = !showAddCategoryForm"
@@ -29,9 +36,15 @@ import { User } from '../../../../core/models/user.model';
       <!-- Add Category Form -->
       <div *ngIf="showAddCategoryForm" class="bg-white rounded-lg shadow p-6">
         <h2 class="text-lg font-bold text-slate-900 mb-4">Add New Category</h2>
-        <form [formGroup]="categoryForm" (ngSubmit)="addCategory()" class="space-y-4">
+        <form
+          [formGroup]="categoryForm"
+          (ngSubmit)="addCategory()"
+          class="space-y-4"
+        >
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Category Name</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-2"
+              >Category Name</label
+            >
             <input
               type="text"
               formControlName="name"
@@ -41,7 +54,9 @@ import { User } from '../../../../core/models/user.model';
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Description</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-2"
+              >Description</label
+            >
             <textarea
               formControlName="description"
               placeholder="Optional description for this category"
@@ -71,29 +86,44 @@ import { User } from '../../../../core/models/user.model';
 
       <!-- Categories Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let category of categories" class="bg-white rounded-lg shadow p-6 border border-slate-200 hover:shadow-lg transition">
+        <div
+          *ngFor="let category of categories"
+          class="bg-white rounded-lg shadow p-6 border border-slate-200 hover:shadow-lg transition"
+        >
           <div class="flex items-start justify-between mb-4">
             <div class="flex-1">
-              <h3 class="text-lg font-bold text-slate-900">{{ category.name }}</h3>
-              <p class="text-sm text-slate-600 mt-2">{{ category.description || 'No description' }}</p>
+              <h3 class="text-lg font-bold text-slate-900">
+                {{ category.name }}
+              </h3>
+              <p class="text-sm text-slate-600 mt-2">
+                {{ category.description || "No description" }}
+              </p>
             </div>
             <span
-              [class]="category.isActive ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-700'"
+              [class]="
+                category.isActive
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-slate-100 text-slate-700'
+              "
               class="px-3 py-1 rounded-full text-xs font-semibold ml-2"
             >
-              {{ category.isActive ? '✅' : '⏸' }}
+              {{ category.isActive ? "✅" : "⏸" }}
             </span>
           </div>
 
           <p class="text-xs text-slate-500 mb-4">
-            Created: {{ category.createdAt | date: 'short' }}
+            Created: {{ category.createdAt | date: "short" }}
           </p>
 
           <div class="flex gap-2">
-            <button class="flex-1 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg font-semibold transition text-sm">
+            <button
+              class="flex-1 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg font-semibold transition text-sm"
+            >
               ✏️ Edit
             </button>
-            <button class="flex-1 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-semibold transition text-sm">
+            <button
+              class="flex-1 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-semibold transition text-sm"
+            >
               🗑️ Delete
             </button>
           </div>
@@ -101,12 +131,17 @@ import { User } from '../../../../core/models/user.model';
       </div>
 
       <!-- Empty State -->
-      <div *ngIf="categories.length === 0" class="text-center py-12 bg-white rounded-lg">
+      <div
+        *ngIf="categories.length === 0"
+        class="text-center py-12 bg-white rounded-lg"
+      >
         <p class="text-slate-600 text-lg">No categories yet</p>
-        <p class="text-slate-500 text-sm mt-2">Create your first category to get started</p>
+        <p class="text-slate-500 text-sm mt-2">
+          Create your first category to get started
+        </p>
       </div>
     </div>
-  `
+  `,
 })
 export class CategoriesComponent implements OnInit {
   categories: Category[] = [];
@@ -117,11 +152,11 @@ export class CategoriesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
   ) {
     this.categoryForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['']
+      name: ["", Validators.required],
+      description: [""],
     });
   }
 
@@ -138,19 +173,21 @@ export class CategoriesComponent implements OnInit {
     this.apiService.getCategories(this.currentUser.organizationId).subscribe({
       next: (categories) => {
         this.categories = categories;
-      }
+      },
     });
   }
 
   addCategory(): void {
     if (!this.currentUser?.organizationId || this.categoryForm.invalid) return;
 
-    this.apiService.createCategory(this.currentUser.organizationId, this.categoryForm.value).subscribe({
-      next: (newCategory) => {
-        this.categories.push(newCategory);
-        this.categoryForm.reset();
-        this.showAddCategoryForm = false;
-      }
-    });
+    this.apiService
+      .createCategory(this.currentUser.organizationId, this.categoryForm.value)
+      .subscribe({
+        next: (newCategory) => {
+          this.categories.push(newCategory);
+          this.categoryForm.reset();
+          this.showAddCategoryForm = false;
+        },
+      });
   }
 }

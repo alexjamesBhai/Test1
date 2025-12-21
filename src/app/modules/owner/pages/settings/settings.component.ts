@@ -1,13 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ApiService } from '../../../../core/services/api.service';
-import { User } from '../../../../core/models/user.model';
-import { Organization } from '../../../../core/models/organization.model';
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import { AuthService } from "../../../../core/services/auth.service";
+import { ApiService } from "../../../../core/services/api.service";
+import { User } from "../../../../core/models/user.model";
+import { Organization } from "../../../../core/models/organization.model";
 
 @Component({
-  selector: 'app-owner-settings',
+  selector: "app-owner-settings",
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
@@ -15,16 +20,26 @@ import { Organization } from '../../../../core/models/organization.model';
       <!-- Page Header -->
       <div>
         <h1 class="text-3xl font-bold text-slate-900">Organization Settings</h1>
-        <p class="text-slate-600 mt-2">Manage your organization details and preferences</p>
+        <p class="text-slate-600 mt-2">
+          Manage your organization details and preferences
+        </p>
       </div>
 
       <!-- Organization Settings Form -->
       <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-lg font-bold text-slate-900 mb-4">Organization Details</h2>
-        <form [formGroup]="orgForm" (ngSubmit)="saveOrgSettings()" class="space-y-4">
+        <h2 class="text-lg font-bold text-slate-900 mb-4">
+          Organization Details
+        </h2>
+        <form
+          [formGroup]="orgForm"
+          (ngSubmit)="saveOrgSettings()"
+          class="space-y-4"
+        >
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-2">Organization Name</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-2"
+                >Organization Name</label
+              >
               <input
                 type="text"
                 formControlName="name"
@@ -32,7 +47,9 @@ import { Organization } from '../../../../core/models/organization.model';
               />
             </div>
             <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-2">Business Type</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-2"
+                >Business Type</label
+              >
               <input
                 type="text"
                 formControlName="businessType"
@@ -43,7 +60,9 @@ import { Organization } from '../../../../core/models/organization.model';
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-2">Email</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-2"
+                >Email</label
+              >
               <input
                 type="email"
                 formControlName="email"
@@ -51,7 +70,9 @@ import { Organization } from '../../../../core/models/organization.model';
               />
             </div>
             <div>
-              <label class="block text-sm font-semibold text-slate-700 mb-2">Phone</label>
+              <label class="block text-sm font-semibold text-slate-700 mb-2"
+                >Phone</label
+              >
               <input
                 type="tel"
                 formControlName="phone"
@@ -61,7 +82,9 @@ import { Organization } from '../../../../core/models/organization.model';
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Address</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-2"
+              >Address</label
+            >
             <input
               type="text"
               formControlName="address"
@@ -74,7 +97,7 @@ import { Organization } from '../../../../core/models/organization.model';
             [disabled]="isSaving"
             class="px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-400 text-white rounded-lg font-semibold transition"
           >
-            {{ isSaving ? '💾 Saving...' : '💾 Save Changes' }}
+            {{ isSaving ? "💾 Saving..." : "💾 Save Changes" }}
           </button>
         </form>
       </div>
@@ -82,9 +105,15 @@ import { Organization } from '../../../../core/models/organization.model';
       <!-- Change Password -->
       <div class="bg-white rounded-lg shadow p-6">
         <h2 class="text-lg font-bold text-slate-900 mb-4">Change Password</h2>
-        <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="space-y-4 max-w-md">
+        <form
+          [formGroup]="passwordForm"
+          (ngSubmit)="changePassword()"
+          class="space-y-4 max-w-md"
+        >
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Current Password</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-2"
+              >Current Password</label
+            >
             <input
               type="password"
               formControlName="currentPassword"
@@ -93,7 +122,9 @@ import { Organization } from '../../../../core/models/organization.model';
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">New Password</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-2"
+              >New Password</label
+            >
             <input
               type="password"
               formControlName="newPassword"
@@ -102,7 +133,9 @@ import { Organization } from '../../../../core/models/organization.model';
           </div>
 
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">Confirm Password</label>
+            <label class="block text-sm font-semibold text-slate-700 mb-2"
+              >Confirm Password</label
+            >
             <input
               type="password"
               formControlName="confirmPassword"
@@ -120,7 +153,7 @@ import { Organization } from '../../../../core/models/organization.model';
         </form>
       </div>
     </div>
-  `
+  `,
 })
 export class OwnerSettingsComponent implements OnInit {
   orgForm: FormGroup;
@@ -131,20 +164,20 @@ export class OwnerSettingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
   ) {
     this.orgForm = this.fb.group({
-      name: ['', Validators.required],
-      businessType: [''],
-      email: ['', Validators.email],
-      phone: [''],
-      address: ['']
+      name: ["", Validators.required],
+      businessType: [""],
+      email: ["", Validators.email],
+      phone: [""],
+      address: [""],
     });
 
     this.passwordForm = this.fb.group({
-      currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
+      currentPassword: ["", Validators.required],
+      newPassword: ["", [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ["", Validators.required],
     });
   }
 
@@ -165,9 +198,9 @@ export class OwnerSettingsComponent implements OnInit {
           businessType: org.businessType,
           email: org.email,
           phone: org.phone,
-          address: org.address
+          address: org.address,
         });
-      }
+      },
     });
   }
 
@@ -175,15 +208,17 @@ export class OwnerSettingsComponent implements OnInit {
     if (!this.currentUser?.organizationId || this.orgForm.invalid) return;
 
     this.isSaving = true;
-    this.apiService.updateOrganization(this.currentUser.organizationId, this.orgForm.value).subscribe({
-      next: () => {
-        this.isSaving = false;
-        // Show success toast
-      },
-      error: () => {
-        this.isSaving = false;
-      }
-    });
+    this.apiService
+      .updateOrganization(this.currentUser.organizationId, this.orgForm.value)
+      .subscribe({
+        next: () => {
+          this.isSaving = false;
+          // Show success toast
+        },
+        error: () => {
+          this.isSaving = false;
+        },
+      });
   }
 
   changePassword(): void {

@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { User } from '../../../core/models/user.model';
-import { AuthService } from '../../../core/services/auth.service';
+import { Component, Input } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule, Router } from "@angular/router";
+import { User } from "../../../core/models/user.model";
+import { AuthService } from "../../../core/services/auth.service";
 
 interface NavItem {
   label: string;
@@ -12,14 +12,20 @@ interface NavItem {
 }
 
 @Component({
-  selector: 'app-sidebar',
+  selector: "app-sidebar",
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <aside class="w-64 bg-slate-900 text-white h-screen fixed left-0 top-16 shadow-lg overflow-y-auto">
+    <aside
+      class="w-64 bg-slate-900 text-white h-screen fixed left-0 top-16 shadow-lg overflow-y-auto"
+    >
       <nav class="p-6">
         <div class="mb-8">
-          <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Menu</h2>
+          <h2
+            class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4"
+          >
+            Menu
+          </h2>
           <ul class="space-y-1">
             <li *ngFor="let item of visibleNavItems">
               <a
@@ -47,11 +53,13 @@ interface NavItem {
       </div>
     </aside>
   `,
-  styles: [`
-    :host {
-      --sidebar-width: 256px;
-    }
-  `]
+  styles: [
+    `
+      :host {
+        --sidebar-width: 256px;
+      }
+    `,
+  ],
 })
 export class SidebarComponent {
   @Input() currentUser: User | null = null;
@@ -60,26 +68,61 @@ export class SidebarComponent {
 
   private allNavItems: NavItem[] = [
     // Admin routes
-    { label: 'Dashboard', path: '/admin/dashboard', icon: '📊', roles: ['ADMIN'] },
-    { label: 'Organizations', path: '/admin/organizations', icon: '🏢', roles: ['ADMIN'] },
-    { label: 'All Users', path: '/admin/users', icon: '👥', roles: ['ADMIN'] },
+    {
+      label: "Dashboard",
+      path: "/admin/dashboard",
+      icon: "📊",
+      roles: ["ADMIN"],
+    },
+    {
+      label: "Organizations",
+      path: "/admin/organizations",
+      icon: "🏢",
+      roles: ["ADMIN"],
+    },
+    { label: "All Users", path: "/admin/users", icon: "👥", roles: ["ADMIN"] },
 
     // Owner/Business Owner routes
-    { label: 'Dashboard', path: '/owner/dashboard', icon: '📊', roles: ['OWNER'] },
-    { label: 'Organization Settings', path: '/owner/settings', icon: '⚙️', roles: ['OWNER'] },
-    { label: 'Users', path: '/owner/users', icon: '👥', roles: ['OWNER'] },
+    {
+      label: "Dashboard",
+      path: "/owner/dashboard",
+      icon: "📊",
+      roles: ["OWNER"],
+    },
+    {
+      label: "Organization Settings",
+      path: "/owner/settings",
+      icon: "⚙️",
+      roles: ["OWNER"],
+    },
+    { label: "Users", path: "/owner/users", icon: "👥", roles: ["OWNER"] },
 
     // Manager routes
-    { label: 'Products', path: '/manager/products', icon: '📦', roles: ['MANAGER', 'OWNER'] },
-    { label: 'Categories', path: '/manager/categories', icon: '📂', roles: ['MANAGER', 'OWNER'] },
+    {
+      label: "Products",
+      path: "/manager/products",
+      icon: "📦",
+      roles: ["MANAGER", "OWNER"],
+    },
+    {
+      label: "Categories",
+      path: "/manager/categories",
+      icon: "📂",
+      roles: ["MANAGER", "OWNER"],
+    },
 
     // Salesperson routes
-    { label: 'POS', path: '/pos/dashboard', icon: '🛒', roles: ['SALESPERSON'] },
+    {
+      label: "POS",
+      path: "/pos/dashboard",
+      icon: "🛒",
+      roles: ["SALESPERSON"],
+    },
   ];
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {
     this.filterNavItems();
   }
@@ -90,11 +133,13 @@ export class SidebarComponent {
 
   private filterNavItems(): void {
     const userRole = this.currentUser?.role;
-    this.visibleNavItems = this.allNavItems.filter(item => item.roles.includes(userRole || ''));
+    this.visibleNavItems = this.allNavItems.filter((item) =>
+      item.roles.includes(userRole || ""),
+    );
   }
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 }

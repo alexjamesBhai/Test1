@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
-import { User, LoginRequest, AuthResponse } from '../models/user.model';
-import { environment } from '../../environments/environment';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, Observable, throwError } from "rxjs";
+import { tap, catchError } from "rxjs/operators";
+import { User, LoginRequest, AuthResponse } from "../models/user.model";
+import { environment } from "../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'auth_token';
-  private readonly USER_KEY = 'auth_user';
-  private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
+  private readonly TOKEN_KEY = "auth_token";
+  private readonly USER_KEY = "auth_user";
+  private currentUserSubject = new BehaviorSubject<User | null>(
+    this.getUserFromStorage(),
+  );
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient) {
@@ -19,17 +21,20 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, credentials)
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth/login`, credentials)
       .pipe(
-        tap(response => {
+        tap((response) => {
           this.setToken(response.token);
           this.setUser(response.user);
           this.currentUserSubject.next(response.user);
         }),
-        catchError(error => {
-          console.error('Login failed:', error);
-          return throwError(() => new Error(error.error?.message || 'Login failed'));
-        })
+        catchError((error) => {
+          console.error("Login failed:", error);
+          return throwError(
+            () => new Error(error.error?.message || "Login failed"),
+          );
+        }),
       );
   }
 
@@ -73,17 +78,18 @@ export class AuthService {
   }
 
   refreshToken(): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, {})
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, {})
       .pipe(
-        tap(response => {
+        tap((response) => {
           this.setToken(response.token);
           this.setUser(response.user);
           this.currentUserSubject.next(response.user);
         }),
-        catchError(error => {
+        catchError((error) => {
           this.logout();
           return throwError(() => error);
-        })
+        }),
       );
   }
 }

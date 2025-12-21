@@ -23,9 +23,11 @@ POSify is a complete POS solution designed for SaaS providers to manage multiple
 ## 👥 User Roles & Permissions
 
 ### 1. **Admin (System Owner)**
+
 The highest level with full system access.
 
 **Permissions:**
+
 - Access all organizations
 - Create, edit, activate/deactivate organizations
 - View and manage all users across all organizations
@@ -36,9 +38,11 @@ The highest level with full system access.
 **Routes:** `/admin/*`
 
 ### 2. **Business Owner (Organization Owner)**
+
 Manages a single organization and its team.
 
 **Permissions:**
+
 - Access only their organization
 - Edit organization details (name, logo, business info)
 - Add and manage team members (create, deactivate, change passwords)
@@ -49,9 +53,11 @@ Manages a single organization and its team.
 **Routes:** `/owner/*`
 
 ### 3. **Manager**
+
 Manages products and inventory within an organization.
 
 **Permissions:**
+
 - Manage product catalog
 - Create and manage product categories
 - Update product prices and stock levels
@@ -63,9 +69,11 @@ Manages products and inventory within an organization.
 **Routes:** `/manager/*`
 
 ### 4. **SalesPerson**
+
 POS-only user for sales transactions.
 
 **Permissions:**
+
 - Create sales through POS
 - Search and filter products
 - Apply discounts and taxes
@@ -152,6 +160,7 @@ src/
 ## 🔐 Authentication Flow
 
 ### Login Process
+
 1. User navigates to `/login`
 2. Enters email and password
 3. AuthService sends credentials to backend API
@@ -164,6 +173,7 @@ src/
    - **SALESPERSON** → `/pos/dashboard` (auto-redirect)
 
 ### Token Management
+
 - JWT token stored in `localStorage` as `auth_token`
 - User data cached as `auth_user`
 - HTTP interceptor automatically adds token to all requests
@@ -171,6 +181,7 @@ src/
 - Logout clears all auth data
 
 ### Route Protection
+
 - `authGuard` - Checks if user is authenticated
 - `adminGuard` - Checks if user role is ADMIN
 - `ownerGuard` - Checks if user role is OWNER with organization
@@ -182,19 +193,21 @@ src/
 ## 🏗️ Architecture Patterns
 
 ### 1. **Standalone Components**
+
 All components use Angular's modern standalone pattern with self-contained imports.
 
 ```typescript
 @Component({
-  selector: 'app-example',
+  selector: "app-example",
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  template: `...`
+  template: `...`,
 })
-export class ExampleComponent { }
+export class ExampleComponent {}
 ```
 
 ### 2. **Lazy-Loaded Feature Modules**
+
 Routes are lazy-loaded to reduce initial bundle size.
 
 ```typescript
@@ -206,16 +219,18 @@ Routes are lazy-loaded to reduce initial bundle size.
 ```
 
 ### 3. **Service Injection**
+
 Core services are provided at root level for singleton pattern.
 
 ```typescript
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class AuthService { }
+export class AuthService {}
 ```
 
 ### 4. **Observable Patterns**
+
 RxJS observables for state management and async operations.
 
 ```typescript
@@ -227,6 +242,7 @@ public currentUser$ = new BehaviorSubject<User | null>(null);
 ## 🎨 UI/UX Design
 
 ### Design System
+
 - **Colors**: Blue (#3b82f6) primary, Purple (#a855f7) secondary
 - **Typography**: Inter font, clear hierarchy
 - **Spacing**: Consistent 4px/8px grid system
@@ -235,11 +251,13 @@ public currentUser$ = new BehaviorSubject<User | null>(null);
 - **Icons**: Emoji for quick recognition
 
 ### Responsive Layout
+
 - **Desktop** (1024px+): Full sidebar, multi-column grids
 - **Tablet** (768px-1023px): Optimized grid layouts
 - **Mobile** (<768px): Single column, touch-friendly buttons
 
 ### Key Components
+
 - **Header**: Brand, user profile, quick access
 - **Sidebar**: Role-based navigation menu
 - **Main Layout**: Content area with padding
@@ -252,6 +270,7 @@ public currentUser$ = new BehaviorSubject<User | null>(null);
 ## 📱 POS Module Highlights
 
 ### Features
+
 ✨ **Product Search** - By name or barcode
 ✨ **Category Filter** - Quick product filtering
 ✨ **Shopping Cart** - Add/remove items, adjust quantities
@@ -262,6 +281,7 @@ public currentUser$ = new BehaviorSubject<User | null>(null);
 ✨ **Touch-Friendly** - Large buttons, responsive layout
 
 ### POS Interface Layout
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    HEADER (User, Time)                      │
@@ -282,21 +302,24 @@ public currentUser$ = new BehaviorSubject<User | null>(null);
 ## 🔌 API Integration
 
 ### Environment Configuration
+
 ```typescript
 // src/app/environments/environment.ts
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api'
+  apiUrl: "http://localhost:3000/api",
 };
 ```
 
 ### Key API Endpoints
 
 #### Authentication
+
 - `POST /auth/login` - User login
 - `POST /auth/refresh` - Refresh JWT token
 
 #### Organizations
+
 - `GET /organizations` - List all (admin only)
 - `POST /organizations` - Create new
 - `GET /organizations/:id` - Get details
@@ -304,6 +327,7 @@ export const environment = {
 - `PATCH /organizations/:id/toggle` - Activate/deactivate
 
 #### Users
+
 - `GET /organizations/:id/users` - List users in org
 - `POST /organizations/:id/users` - Create user
 - `PUT /organizations/:id/users/:userId` - Update user
@@ -311,6 +335,7 @@ export const environment = {
 - `POST /organizations/:id/users/:userId/reset-password` - Reset password
 
 #### Products
+
 - `GET /organizations/:id/products` - List products
 - `GET /organizations/:id/products/search?q=query` - Search
 - `GET /organizations/:id/products/barcode/:barcode` - Get by barcode
@@ -318,11 +343,13 @@ export const environment = {
 - `PUT /organizations/:id/products/:productId` - Update
 
 #### Categories
+
 - `GET /organizations/:id/categories` - List categories
 - `POST /organizations/:id/categories` - Create category
 - `PUT /organizations/:id/categories/:categoryId` - Update
 
 #### Sales
+
 - `GET /organizations/:id/sales` - List sales
 - `POST /organizations/:id/sales` - Create sale
 - `GET /organizations/:id/sales/:saleId` - Get receipt
@@ -332,11 +359,13 @@ export const environment = {
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 - Modern browser with ES6+ support
 
 ### Installation
+
 ```bash
 # Install dependencies
 npm install
@@ -352,6 +381,7 @@ npm test
 ```
 
 ### Demo Credentials
+
 ```
 Admin:
   Email: admin@posify.com
@@ -375,16 +405,19 @@ Sales Person:
 ## 🔧 Development
 
 ### Adding New Feature Pages
+
 1. Create component in appropriate module folder
 2. Add route to module's routing file
 3. Update sidebar navigation if needed
 
 ### Adding New API Endpoints
+
 1. Add method to `ApiService`
 2. Add model if needed to `core/models`
 3. Use in components via DI
 
 ### Styling
+
 - Use TailwindCSS utilities in templates
 - Follow color scheme in theme
 - Maintain responsive design patterns

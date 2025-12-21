@@ -44,8 +44,8 @@ export interface Sale {
   tax: number;
   discount: number;
   total: number;
-  paymentMethod: 'CASH' | 'CARD' | 'CHECK' | 'DIGITAL_WALLET';
-  status: 'COMPLETED' | 'PENDING' | 'CANCELLED';
+  paymentMethod: "CASH" | "CARD" | "CHECK" | "DIGITAL_WALLET";
+  status: "COMPLETED" | "PENDING" | "CANCELLED";
   notes?: string;
   createdAt: Date;
 }

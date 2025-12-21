@@ -1,32 +1,48 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
-import { User } from '../../core/models/user.model';
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import { Router } from "@angular/router";
+import { AuthService } from "../../core/services/auth.service";
+import { User } from "../../core/models/user.model";
 
 @Component({
-  selector: 'app-login',
+  selector: "app-login",
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 flex items-center justify-center p-4">
+    <div
+      class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 flex items-center justify-center p-4"
+    >
       <div class="w-full max-w-md">
         <!-- Card -->
         <div class="bg-white rounded-2xl shadow-2xl p-8">
           <!-- Header -->
           <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h1
+              class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2"
+            >
               POSify
             </h1>
             <p class="text-slate-600 text-sm">Multi-Tenant POS System</p>
           </div>
 
           <!-- Form -->
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+          <form
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            class="space-y-5"
+          >
             <!-- Email Input -->
             <div>
-              <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="email"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Email Address
               </label>
               <input
@@ -36,14 +52,20 @@ import { User } from '../../core/models/user.model';
                 placeholder="you@example.com"
                 class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-              <p *ngIf="email.invalid && email.touched" class="text-red-500 text-xs mt-1">
+              <p
+                *ngIf="email.invalid && email.touched"
+                class="text-red-500 text-xs mt-1"
+              >
                 Please enter a valid email
               </p>
             </div>
 
             <!-- Password Input -->
             <div>
-              <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="password"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Password
               </label>
               <input
@@ -53,13 +75,19 @@ import { User } from '../../core/models/user.model';
                 placeholder="••••••••"
                 class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-              <p *ngIf="password.invalid && password.touched" class="text-red-500 text-xs mt-1">
+              <p
+                *ngIf="password.invalid && password.touched"
+                class="text-red-500 text-xs mt-1"
+              >
                 Password is required
               </p>
             </div>
 
             <!-- Error Message -->
-            <div *ngIf="errorMessage" class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div
+              *ngIf="errorMessage"
+              class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+            >
               {{ errorMessage }}
             </div>
 
@@ -72,8 +100,26 @@ import { User } from '../../core/models/user.model';
               <span *ngIf="!isLoading">Sign In</span>
               <span *ngIf="isLoading" class="flex items-center gap-2">
                 <svg class="animate-spin h-5 w-5" viewBox="0 0 50 50">
-                  <circle class="opacity-30" cx="25" cy="25" r="20" stroke="currentColor" stroke-width="5" fill="none" />
-                  <circle class="text-white" cx="25" cy="25" r="20" stroke="currentColor" stroke-width="5" fill="none" stroke-dasharray="100" stroke-dashoffset="75" />
+                  <circle
+                    class="opacity-30"
+                    cx="25"
+                    cy="25"
+                    r="20"
+                    stroke="currentColor"
+                    stroke-width="5"
+                    fill="none"
+                  />
+                  <circle
+                    class="text-white"
+                    cx="25"
+                    cy="25"
+                    r="20"
+                    stroke="currentColor"
+                    stroke-width="5"
+                    fill="none"
+                    stroke-dasharray="100"
+                    stroke-dashoffset="75"
+                  />
                 </svg>
                 Signing in...
               </span>
@@ -82,7 +128,9 @@ import { User } from '../../core/models/user.model';
 
           <!-- Demo Credentials -->
           <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <p class="text-xs font-semibold text-blue-900 mb-2">📝 Demo Credentials:</p>
+            <p class="text-xs font-semibold text-blue-900 mb-2">
+              📝 Demo Credentials:
+            </p>
             <div class="space-y-1 text-xs text-blue-800">
               <p><strong>Admin:</strong> admin@posify.com / admin123</p>
               <p><strong>Owner:</strong> owner@posify.com / owner123</p>
@@ -99,27 +147,29 @@ import { User } from '../../core/models/user.model';
       </div>
     </div>
   `,
-  styles: [`
-    :host {
-      display: block;
-      background: linear-gradient(to bottom right, #3b82f6, #a855f7);
-      min-height: 100vh;
-    }
-  `]
+  styles: [
+    `
+      :host {
+        display: block;
+        background: linear-gradient(to bottom right, #3b82f6, #a855f7);
+        min-height: 100vh;
+      }
+    `,
+  ],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
-  errorMessage = '';
+  errorMessage = "";
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -132,22 +182,22 @@ export class LoginComponent implements OnInit {
   }
 
   get email() {
-    return this.loginForm.get('email')!;
+    return this.loginForm.get("email")!;
   }
 
   get password() {
-    return this.loginForm.get('password')!;
+    return this.loginForm.get("password")!;
   }
 
   onSubmit(): void {
     if (this.loginForm.invalid) return;
 
     this.isLoading = true;
-    this.errorMessage = '';
+    this.errorMessage = "";
 
     const credentials = {
       email: this.loginForm.value.email,
-      password: this.loginForm.value.password
+      password: this.loginForm.value.password,
     };
 
     this.authService.login(credentials).subscribe({
@@ -157,27 +207,27 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.message || 'Login failed. Please try again.';
-      }
+        this.errorMessage = error.message || "Login failed. Please try again.";
+      },
     });
   }
 
   private redirectByRole(user: User): void {
     switch (user.role) {
-      case 'ADMIN':
-        this.router.navigate(['/admin/dashboard']);
+      case "ADMIN":
+        this.router.navigate(["/admin/dashboard"]);
         break;
-      case 'OWNER':
-        this.router.navigate(['/owner/dashboard']);
+      case "OWNER":
+        this.router.navigate(["/owner/dashboard"]);
         break;
-      case 'MANAGER':
-        this.router.navigate(['/manager/products']);
+      case "MANAGER":
+        this.router.navigate(["/manager/products"]);
         break;
-      case 'SALESPERSON':
-        this.router.navigate(['/pos/dashboard']);
+      case "SALESPERSON":
+        this.router.navigate(["/pos/dashboard"]);
         break;
       default:
-        this.router.navigate(['/']);
+        this.router.navigate(["/"]);
     }
   }
 }
