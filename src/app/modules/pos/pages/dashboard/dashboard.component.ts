@@ -410,13 +410,13 @@ export class PosDashboardComponent implements OnInit {
   completeSale(): void {
     if (this.cartItems.length === 0 || !this.currentUser?.organizationId) return;
 
-    const sale = {
+    const sale: Partial<any> = {
       items: this.cartItems,
       subtotal: this.subtotal,
       tax: this.taxAmount,
       discount: this.discountAmount,
       total: this.total,
-      paymentMethod: this.paymentMethod,
+      paymentMethod: this.paymentMethod as 'CASH' | 'CARD' | 'CHECK' | 'DIGITAL_WALLET',
       status: 'COMPLETED'
     };
 
