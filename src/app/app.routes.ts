@@ -1,11 +1,13 @@
 import { Routes } from "@angular/router";
 import { LoginComponent } from "./pages/login/login.component";
+import { SignupComponent } from "./pages/signup/signup.component";
 import { AccessDeniedComponent } from "./pages/access-denied/access-denied.component";
 import { authGuard } from "./core/guards/auth.guard";
 import { MainLayoutComponent } from "./shared/layouts/main-layout.component";
 
 export const routes: Routes = [
   { path: "login", component: LoginComponent },
+  { path: "signup", component: SignupComponent },
   { path: "access-denied", component: AccessDeniedComponent },
 
   {
