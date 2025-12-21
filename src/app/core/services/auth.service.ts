@@ -5,11 +5,34 @@ import { tap, catchError } from "rxjs/operators";
 import { User, LoginRequest, AuthResponse } from "../models/user.model";
 import { environment } from "../../environments/environment";
 
+interface AuthApiResponse {
+  isSuccess: boolean;
+  message: string;
+  statusCode: number;
+  response?: {
+    accessToken?: { token: string; expiryTokenDate: string };
+    refreshToken?: { token: string; expiryTokenDate: string };
+  };
+  status?: number;
+}
+
+interface SignupRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dob: string;
+  gender: number;
+  phoneNumber: string;
+  roles: string[];
+}
+
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private readonly TOKEN_KEY = "auth_token";
+  private readonly ACCESS_TOKEN_KEY = "access_token";
+  private readonly REFRESH_TOKEN_KEY = "refresh_token";
   private readonly USER_KEY = "auth_user";
   private currentUserSubject = new BehaviorSubject<User | null>(
     this.getUserFromStorage(),
@@ -20,14 +43,48 @@ export class AuthService {
     this.loadUserFromStorage();
   }
 
-  login(credentials: LoginRequest): Observable<AuthResponse> {
+  signup(signupData: SignupRequest): Observable<AuthApiResponse> {
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/auth/login`, credentials)
+      .post<AuthApiResponse>(
+        `${environment.apiUrl}/Authentication`,
+        signupData,
+      )
+      .pipe(
+        catchError((error) => {
+          console.error("Signup failed:", error);
+          return throwError(
+            () => new Error(error.error?.message || "Signup failed"),
+          );
+        }),
+      );
+  }
+
+  login(credentials: LoginRequest): Observable<AuthApiResponse> {
+    return this.http
+      .post<AuthApiResponse>(`${environment.apiUrl}/Authentication/login`, {
+        username: credentials.email,
+        password: credentials.password,
+      })
       .pipe(
         tap((response) => {
-          this.setToken(response.token);
-          this.setUser(response.user);
-          this.currentUserSubject.next(response.user);
+          if (
+            response.isSuccess &&
+            response.response?.accessToken?.token
+          ) {
+            const accessToken = response.response.accessToken.token;
+            const refreshToken = response.response.refreshToken?.token;
+
+            this.setAccessToken(accessToken);
+            if (refreshToken) {
+              this.setRefreshToken(refreshToken);
+            }
+
+            const user = this.extractUserFromToken(accessToken);
+            if (user) {
+              this.setUser(user);
+              this.currentUserSubject.next(user);
+            }
+          }
         }),
         catchError((error) => {
           console.error("Login failed:", error);
@@ -39,21 +96,30 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
     this.currentUserSubject.next(null);
   }
 
-  setToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
+  setAccessToken(token: string): void {
+    localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+  getAccessToken(): string | null {
+    return localStorage.getItem(this.ACCESS_TOKEN_KEY);
+  }
+
+  setRefreshToken(token: string): void {
+    localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!this.getAccessToken();
   }
 
   setUser(user: User): void {
@@ -77,19 +143,120 @@ export class AuthService {
     }
   }
 
-  refreshToken(): Observable<AuthResponse> {
+  refreshAccessToken(): Observable<AuthApiResponse> {
+    const accessToken = this.getAccessToken();
+    const refreshToken = this.getRefreshToken();
+
+    if (!accessToken || !refreshToken) {
+      this.logout();
+      return throwError(() => new Error("No tokens available"));
+    }
+
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, {})
+      .post<AuthApiResponse>(
+        `${environment.apiUrl}/Authentication/Refresh-Token`,
+        {
+          accessToken: { token: accessToken },
+          refreshToken: { token: refreshToken },
+        },
+      )
       .pipe(
         tap((response) => {
-          this.setToken(response.token);
-          this.setUser(response.user);
-          this.currentUserSubject.next(response.user);
+          if (
+            response.isSuccess &&
+            response.response?.accessToken?.token
+          ) {
+            const newAccessToken = response.response.accessToken.token;
+            const newRefreshToken =
+              response.response.refreshToken?.token;
+
+            this.setAccessToken(newAccessToken);
+            if (newRefreshToken) {
+              this.setRefreshToken(newRefreshToken);
+            }
+
+            const user = this.extractUserFromToken(newAccessToken);
+            if (user) {
+              this.setUser(user);
+              this.currentUserSubject.next(user);
+            }
+          }
         }),
         catchError((error) => {
           this.logout();
           return throwError(() => error);
         }),
       );
+  }
+
+  changePassword(
+    userName: string,
+    newPassword: string,
+  ): Observable<AuthApiResponse> {
+    return this.http
+      .post<AuthApiResponse>(
+        `${environment.apiUrl}/Authentication/ChangePassword`,
+        { userName, password: newPassword },
+      )
+      .pipe(
+        catchError((error) => {
+          console.error("Change password failed:", error);
+          return throwError(
+            () =>
+              new Error(error.error?.message || "Change password failed"),
+          );
+        }),
+      );
+  }
+
+  private extractUserFromToken(token: string): User | null {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const email =
+        payload[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+        ];
+      const userId =
+        payload[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        ];
+      const role =
+        payload[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ];
+
+      if (email && userId) {
+        const user: User = {
+          id: userId,
+          email,
+          name: email.split("@")[0],
+          role: this.mapRole(role),
+          isActive: true,
+          createdAt: new Date(),
+        };
+        return user;
+      }
+    } catch (error) {
+      console.error("Error extracting user from token:", error);
+    }
+    return null;
+  }
+
+  private mapRole(
+    roleStr: string,
+  ): "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON" {
+    const roleMap: {
+      [key: string]:
+        | "ADMIN"
+        | "OWNER"
+        | "MANAGER"
+        | "SALESPERSON";
+    } = {
+      Admin: "ADMIN",
+      Owner: "OWNER",
+      Manager: "MANAGER",
+      SalesPerson: "SALESPERSON",
+    };
+    return roleMap[roleStr] || "SALESPERSON";
   }
 }
