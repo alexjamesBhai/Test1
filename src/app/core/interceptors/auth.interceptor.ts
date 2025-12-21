@@ -21,15 +21,23 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const token = this.authService.getToken();
+    const token = this.authService.getAccessToken();
 
-    if (token) {
+    // Don't add token to login and signup endpoints
+    if (
+      !request.url.includes("/Authentication/login") &&
+      !request.url.includes("/Authentication") &&
+      token
+    ) {
       request = this.addToken(request, token);
     }
 
     return next.handle(request).pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
+        if (
+          error instanceof HttpErrorResponse &&
+          error.status === 401
+        ) {
           return this.handle401Error(request, next);
         }
         return throwError(() => error);
@@ -37,7 +45,10 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
 
-  private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
+  private addToken(
+    request: HttpRequest<any>,
+    token: string,
+  ): HttpRequest<any> {
     return request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
@@ -53,11 +64,18 @@ export class AuthInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
-      return this.authService.refreshToken().pipe(
+      return this.authService.refreshAccessToken().pipe(
         switchMap((response: any) => {
           this.isRefreshing = false;
-          this.refreshTokenSubject.next(response.token);
-          return next.handle(this.addToken(request, response.token));
+          const newToken =
+            response.response?.accessToken?.token;
+          if (newToken) {
+            this.refreshTokenSubject.next(newToken);
+            return next.handle(
+              this.addToken(request, newToken),
+            );
+          }
+          return throwError(() => new Error("Token refresh failed"));
         }),
         catchError((err) => {
           this.isRefreshing = false;
