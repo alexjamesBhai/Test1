@@ -14,24 +14,35 @@ import { AuthService } from "../../core/services/auth.service";
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 flex items-center justify-center p-4">
+    <div
+      class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 flex items-center justify-center p-4"
+    >
       <div class="w-full max-w-md">
         <!-- Card -->
         <div class="bg-white rounded-2xl shadow-2xl p-8">
           <!-- Header -->
           <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h1
+              class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2"
+            >
               POSify
             </h1>
             <p class="text-slate-600 text-sm">Create Account</p>
           </div>
 
           <!-- Form -->
-          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          <form
+            [formGroup]="signupForm"
+            (ngSubmit)="onSubmit()"
+            class="space-y-4"
+          >
             <!-- First Name -->
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <label for="firstName" class="block text-sm font-semibold text-slate-700 mb-2">
+                <label
+                  for="firstName"
+                  class="block text-sm font-semibold text-slate-700 mb-2"
+                >
                   First Name
                 </label>
                 <input
@@ -41,14 +52,20 @@ import { AuthService } from "../../core/services/auth.service";
                   placeholder="John"
                   class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"
                 />
-                <p *ngIf="firstName.invalid && firstName.touched" class="text-red-500 text-xs mt-1">
+                <p
+                  *ngIf="firstName.invalid && firstName.touched"
+                  class="text-red-500 text-xs mt-1"
+                >
                   Required
                 </p>
               </div>
 
               <!-- Last Name -->
               <div>
-                <label for="lastName" class="block text-sm font-semibold text-slate-700 mb-2">
+                <label
+                  for="lastName"
+                  class="block text-sm font-semibold text-slate-700 mb-2"
+                >
                   Last Name
                 </label>
                 <input
@@ -58,7 +75,10 @@ import { AuthService } from "../../core/services/auth.service";
                   placeholder="Doe"
                   class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"
                 />
-                <p *ngIf="lastName.invalid && lastName.touched" class="text-red-500 text-xs mt-1">
+                <p
+                  *ngIf="lastName.invalid && lastName.touched"
+                  class="text-red-500 text-xs mt-1"
+                >
                   Required
                 </p>
               </div>
@@ -66,7 +86,10 @@ import { AuthService } from "../../core/services/auth.service";
 
             <!-- Email Input -->
             <div>
-              <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="email"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Email Address
               </label>
               <input
@@ -76,14 +99,20 @@ import { AuthService } from "../../core/services/auth.service";
                 placeholder="you@example.com"
                 class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-              <p *ngIf="email.invalid && email.touched" class="text-red-500 text-xs mt-1">
+              <p
+                *ngIf="email.invalid && email.touched"
+                class="text-red-500 text-xs mt-1"
+              >
                 Please enter a valid email
               </p>
             </div>
 
             <!-- Phone Number -->
             <div>
-              <label for="phoneNumber" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="phoneNumber"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Phone Number
               </label>
               <input
@@ -97,7 +126,10 @@ import { AuthService } from "../../core/services/auth.service";
 
             <!-- Date of Birth -->
             <div>
-              <label for="dob" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="dob"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Date of Birth
               </label>
               <input
@@ -106,14 +138,20 @@ import { AuthService } from "../../core/services/auth.service";
                 formControlName="dob"
                 class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-              <p *ngIf="dob.invalid && dob.touched" class="text-red-500 text-xs mt-1">
+              <p
+                *ngIf="dob.invalid && dob.touched"
+                class="text-red-500 text-xs mt-1"
+              >
                 Required
               </p>
             </div>
 
             <!-- Gender -->
             <div>
-              <label for="gender" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="gender"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Gender
               </label>
               <select
@@ -126,14 +164,20 @@ import { AuthService } from "../../core/services/auth.service";
                 <option value="1">Female</option>
                 <option value="2">Other</option>
               </select>
-              <p *ngIf="gender.invalid && gender.touched" class="text-red-500 text-xs mt-1">
+              <p
+                *ngIf="gender.invalid && gender.touched"
+                class="text-red-500 text-xs mt-1"
+              >
                 Required
               </p>
             </div>
 
             <!-- Password Input -->
             <div>
-              <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="password"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Password
               </label>
               <input
@@ -143,13 +187,19 @@ import { AuthService } from "../../core/services/auth.service";
                 placeholder="••••••••"
                 class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-              <p *ngIf="password.invalid && password.touched" class="text-red-500 text-xs mt-1">
+              <p
+                *ngIf="password.invalid && password.touched"
+                class="text-red-500 text-xs mt-1"
+              >
                 Password must be at least 6 characters
               </p>
             </div>
 
             <!-- Error Message -->
-            <div *ngIf="errorMessage" class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div
+              *ngIf="errorMessage"
+              class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+            >
               {{ errorMessage }}
             </div>
 
@@ -162,8 +212,26 @@ import { AuthService } from "../../core/services/auth.service";
               <span *ngIf="!isLoading">Create Account</span>
               <span *ngIf="isLoading" class="flex items-center gap-2">
                 <svg class="animate-spin h-5 w-5" viewBox="0 0 50 50">
-                  <circle class="opacity-30" cx="25" cy="25" r="20" stroke="currentColor" stroke-width="5" fill="none" />
-                  <circle class="text-white" cx="25" cy="25" r="20" stroke="currentColor" stroke-width="5" fill="none" stroke-dasharray="100" stroke-dashoffset="75" />
+                  <circle
+                    class="opacity-30"
+                    cx="25"
+                    cy="25"
+                    r="20"
+                    stroke="currentColor"
+                    stroke-width="5"
+                    fill="none"
+                  />
+                  <circle
+                    class="text-white"
+                    cx="25"
+                    cy="25"
+                    r="20"
+                    stroke="currentColor"
+                    stroke-width="5"
+                    fill="none"
+                    stroke-dasharray="100"
+                    stroke-dashoffset="75"
+                  />
                 </svg>
                 Creating...
               </span>
@@ -174,7 +242,10 @@ import { AuthService } from "../../core/services/auth.service";
           <div class="mt-6 text-center">
             <p class="text-slate-600 text-sm">
               Already have an account?
-              <a routerLink="/login" class="text-blue-600 hover:text-blue-700 font-semibold">
+              <a
+                routerLink="/login"
+                class="text-blue-600 hover:text-blue-700 font-semibold"
+              >
                 Sign In
               </a>
             </p>
@@ -279,8 +350,7 @@ export class SignupComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage =
-          error.message || "Signup failed. Please try again.";
+        this.errorMessage = error.message || "Signup failed. Please try again.";
       },
     });
   }

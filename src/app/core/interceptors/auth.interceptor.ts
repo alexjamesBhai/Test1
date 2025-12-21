@@ -34,10 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error) => {
-        if (
-          error instanceof HttpErrorResponse &&
-          error.status === 401
-        ) {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
           return this.handle401Error(request, next);
         }
         return throwError(() => error);
@@ -45,10 +42,7 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
 
-  private addToken(
-    request: HttpRequest<any>,
-    token: string,
-  ): HttpRequest<any> {
+  private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
     return request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
@@ -67,13 +61,10 @@ export class AuthInterceptor implements HttpInterceptor {
       return this.authService.refreshAccessToken().pipe(
         switchMap((response: any) => {
           this.isRefreshing = false;
-          const newToken =
-            response.response?.accessToken?.token;
+          const newToken = response.response?.accessToken?.token;
           if (newToken) {
             this.refreshTokenSubject.next(newToken);
-            return next.handle(
-              this.addToken(request, newToken),
-            );
+            return next.handle(this.addToken(request, newToken));
           }
           return throwError(() => new Error("Token refresh failed"));
         }),

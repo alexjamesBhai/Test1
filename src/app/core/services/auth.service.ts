@@ -45,10 +45,7 @@ export class AuthService {
 
   signup(signupData: SignupRequest): Observable<AuthApiResponse> {
     return this.http
-      .post<AuthApiResponse>(
-        `${environment.apiUrl}/Authentication`,
-        signupData,
-      )
+      .post<AuthApiResponse>(`${environment.apiUrl}/Authentication`, signupData)
       .pipe(
         catchError((error) => {
           console.error("Signup failed:", error);
@@ -67,10 +64,7 @@ export class AuthService {
       })
       .pipe(
         tap((response) => {
-          if (
-            response.isSuccess &&
-            response.response?.accessToken?.token
-          ) {
+          if (response.isSuccess && response.response?.accessToken?.token) {
             const accessToken = response.response.accessToken.token;
             const refreshToken = response.response.refreshToken?.token;
 
@@ -162,13 +156,9 @@ export class AuthService {
       )
       .pipe(
         tap((response) => {
-          if (
-            response.isSuccess &&
-            response.response?.accessToken?.token
-          ) {
+          if (response.isSuccess && response.response?.accessToken?.token) {
             const newAccessToken = response.response.accessToken.token;
-            const newRefreshToken =
-              response.response.refreshToken?.token;
+            const newRefreshToken = response.response.refreshToken?.token;
 
             this.setAccessToken(newAccessToken);
             if (newRefreshToken) {
@@ -202,8 +192,7 @@ export class AuthService {
         catchError((error) => {
           console.error("Change password failed:", error);
           return throwError(
-            () =>
-              new Error(error.error?.message || "Change password failed"),
+            () => new Error(error.error?.message || "Change password failed"),
           );
         }),
       );
@@ -213,17 +202,13 @@ export class AuthService {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       const email =
-        payload[
-          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-        ];
+        payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
       const userId =
         payload[
           "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
         ];
       const role =
-        payload[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ];
+        payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
       if (email && userId) {
         const user: User = {
@@ -246,11 +231,7 @@ export class AuthService {
     roleStr: string,
   ): "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON" {
     const roleMap: {
-      [key: string]:
-        | "ADMIN"
-        | "OWNER"
-        | "MANAGER"
-        | "SALESPERSON";
+      [key: string]: "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON";
     } = {
       Admin: "ADMIN",
       Owner: "OWNER",

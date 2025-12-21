@@ -15,23 +15,34 @@ import { User } from "../../core/models/user.model";
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 flex items-center justify-center p-4">
+    <div
+      class="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600 flex items-center justify-center p-4"
+    >
       <div class="w-full max-w-md">
         <!-- Card -->
         <div class="bg-white rounded-2xl shadow-2xl p-8">
           <!-- Header -->
           <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h1
+              class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2"
+            >
               POSify
             </h1>
             <p class="text-slate-600 text-sm">Multi-Tenant POS System</p>
           </div>
 
           <!-- Form -->
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+          <form
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            class="space-y-5"
+          >
             <!-- Email Input -->
             <div>
-              <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="email"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Email Address
               </label>
               <input
@@ -41,14 +52,20 @@ import { User } from "../../core/models/user.model";
                 placeholder="you@example.com"
                 class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-              <p *ngIf="email.invalid && email.touched" class="text-red-500 text-xs mt-1">
+              <p
+                *ngIf="email.invalid && email.touched"
+                class="text-red-500 text-xs mt-1"
+              >
                 Please enter a valid email
               </p>
             </div>
 
             <!-- Password Input -->
             <div>
-              <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">
+              <label
+                for="password"
+                class="block text-sm font-semibold text-slate-700 mb-2"
+              >
                 Password
               </label>
               <input
@@ -58,13 +75,19 @@ import { User } from "../../core/models/user.model";
                 placeholder="••••••••"
                 class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-              <p *ngIf="password.invalid && password.touched" class="text-red-500 text-xs mt-1">
+              <p
+                *ngIf="password.invalid && password.touched"
+                class="text-red-500 text-xs mt-1"
+              >
                 Password is required
               </p>
             </div>
 
             <!-- Error Message -->
-            <div *ngIf="errorMessage" class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div
+              *ngIf="errorMessage"
+              class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+            >
               {{ errorMessage }}
             </div>
 
@@ -77,8 +100,26 @@ import { User } from "../../core/models/user.model";
               <span *ngIf="!isLoading">Sign In</span>
               <span *ngIf="isLoading" class="flex items-center gap-2">
                 <svg class="animate-spin h-5 w-5" viewBox="0 0 50 50">
-                  <circle class="opacity-30" cx="25" cy="25" r="20" stroke="currentColor" stroke-width="5" fill="none" />
-                  <circle class="text-white" cx="25" cy="25" r="20" stroke="currentColor" stroke-width="5" fill="none" stroke-dasharray="100" stroke-dashoffset="75" />
+                  <circle
+                    class="opacity-30"
+                    cx="25"
+                    cy="25"
+                    r="20"
+                    stroke="currentColor"
+                    stroke-width="5"
+                    fill="none"
+                  />
+                  <circle
+                    class="text-white"
+                    cx="25"
+                    cy="25"
+                    r="20"
+                    stroke="currentColor"
+                    stroke-width="5"
+                    fill="none"
+                    stroke-dasharray="100"
+                    stroke-dashoffset="75"
+                  />
                 </svg>
                 Signing in...
               </span>
@@ -89,7 +130,10 @@ import { User } from "../../core/models/user.model";
           <div class="mt-6 text-center">
             <p class="text-slate-600 text-sm">
               Don't have an account?
-              <a routerLink="/signup" class="text-blue-600 hover:text-blue-700 font-semibold">
+              <a
+                routerLink="/signup"
+                class="text-blue-600 hover:text-blue-700 font-semibold"
+              >
                 Create one here
               </a>
             </p>
