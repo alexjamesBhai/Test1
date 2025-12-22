@@ -79,7 +79,10 @@ export class AuthService {
       })
       .pipe(
         tap((response) => {
-          if (response.isSuccess && response.response?.response?.accessToken?.token) {
+          if (
+            response.isSuccess &&
+            response.response?.response?.accessToken?.token
+          ) {
             const accessToken = response.response.response.accessToken.token;
             const refreshToken = response.response.response.refreshToken?.token;
 
@@ -171,9 +174,13 @@ export class AuthService {
       )
       .pipe(
         tap((response) => {
-          if (response.isSuccess && response.response?.response?.accessToken?.token) {
+          if (
+            response.isSuccess &&
+            response.response?.response?.accessToken?.token
+          ) {
             const newAccessToken = response.response.response.accessToken.token;
-            const newRefreshToken = response.response.response.refreshToken?.token;
+            const newRefreshToken =
+              response.response.response.refreshToken?.token;
 
             this.setAccessToken(newAccessToken);
             if (newRefreshToken) {

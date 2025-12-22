@@ -306,7 +306,10 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials).subscribe({
       next: (response) => {
         this.isLoading = false;
-        if (response.isSuccess && response.response?.response?.accessToken?.token) {
+        if (
+          response.isSuccess &&
+          response.response?.response?.accessToken?.token
+        ) {
           this.saveRememberMePreference();
           const token = response.response.response.accessToken.token;
           const role = this.extractRoleFromToken(token);
