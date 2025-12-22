@@ -232,9 +232,7 @@ export class LoginComponent implements OnInit {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       const roleStr =
-        payload[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ];
+        payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
       const roleMap: {
         [key: string]: "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON";
