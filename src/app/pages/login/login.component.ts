@@ -184,7 +184,7 @@ export class LoginComponent implements OnInit {
     // If already logged in, redirect based on role
     const currentUser = this.authService.getCurrentUser();
     if (currentUser) {
-      this.redirectByRole(currentUser);
+      this.redirectByRole(currentUser.role);
     }
   }
 
