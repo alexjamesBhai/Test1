@@ -210,14 +210,10 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials).subscribe({
       next: (response) => {
         this.isLoading = false;
-        if (response.isSuccess) {
-          // Give the BehaviorSubject time to emit the updated value
-          setTimeout(() => {
-            const currentUser = this.authService.getCurrentUser();
-            if (currentUser) {
-              this.redirectByRole(currentUser);
-            }
-          }, 100);
+        if (response.isSuccess && response.response?.accessToken?.token) {
+          const token = response.response.accessToken.token;
+          const role = this.extractRoleFromToken(token);
+          this.redirectByRole(role);
         } else {
           this.errorMessage =
             response.message || "Login failed. Please try again.";
@@ -228,6 +224,32 @@ export class LoginComponent implements OnInit {
         this.errorMessage = error.message || "Login failed. Please try again.";
       },
     });
+  }
+
+  private extractRoleFromToken(
+    token: string,
+  ): "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON" {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const roleStr =
+        payload[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ];
+
+      const roleMap: {
+        [key: string]: "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON";
+      } = {
+        Admin: "ADMIN",
+        Owner: "OWNER",
+        Manager: "MANAGER",
+        SalesPerson: "SALESPERSON",
+      };
+
+      return roleMap[roleStr] || "SALESPERSON";
+    } catch (error) {
+      console.error("Error extracting role from token:", error);
+      return "SALESPERSON";
+    }
   }
 
   private redirectByRole(user: User): void {
