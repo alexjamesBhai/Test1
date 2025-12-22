@@ -211,10 +211,13 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         if (response.isSuccess) {
-          const currentUser = this.authService.getCurrentUser();
-          if (currentUser) {
-            this.redirectByRole(currentUser);
-          }
+          // Give the BehaviorSubject time to emit the updated value
+          setTimeout(() => {
+            const currentUser = this.authService.getCurrentUser();
+            if (currentUser) {
+              this.redirectByRole(currentUser);
+            }
+          }, 100);
         } else {
           this.errorMessage =
             response.message || "Login failed. Please try again.";
