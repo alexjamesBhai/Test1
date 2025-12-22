@@ -168,6 +168,9 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
   errorMessage = "";
+  showPassword = false;
+  private readonly REMEMBER_ME_KEY = "pos_remember_me";
+  private readonly REMEMBER_EMAIL_KEY = "pos_remember_email";
 
   constructor(
     private fb: FormBuilder,
@@ -177,6 +180,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(6)]],
+      rememberMe: [false],
     });
   }
 
@@ -186,6 +190,9 @@ export class LoginComponent implements OnInit {
     if (currentUser) {
       this.redirectByRole(currentUser.role);
     }
+
+    // Load saved email if remember me was enabled
+    this.loadRememberedEmail();
   }
 
   get email() {
@@ -194,6 +201,36 @@ export class LoginComponent implements OnInit {
 
   get password() {
     return this.loginForm.get("password")!;
+  }
+
+  get rememberMe() {
+    return this.loginForm.get("rememberMe")!;
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  private loadRememberedEmail(): void {
+    const isRemembered = localStorage.getItem(this.REMEMBER_ME_KEY) === "true";
+    const savedEmail = localStorage.getItem(this.REMEMBER_EMAIL_KEY);
+
+    if (isRemembered && savedEmail) {
+      this.loginForm.patchValue({
+        email: savedEmail,
+        rememberMe: true,
+      });
+    }
+  }
+
+  private saveRememberMePreference(): void {
+    if (this.rememberMe.value) {
+      localStorage.setItem(this.REMEMBER_ME_KEY, "true");
+      localStorage.setItem(this.REMEMBER_EMAIL_KEY, this.email.value);
+    } else {
+      localStorage.removeItem(this.REMEMBER_ME_KEY);
+      localStorage.removeItem(this.REMEMBER_EMAIL_KEY);
+    }
   }
 
   onSubmit(): void {
