@@ -10,14 +10,22 @@ export interface TokenResponse {
   expiryTokenDate: string;
 }
 
+export interface TokensData {
+  accessToken?: TokenResponse;
+  refreshToken?: TokenResponse;
+}
+
+export interface LoginResponseData {
+  token: null;
+  isTwoFactorEnable: boolean;
+  response?: TokensData;
+}
+
 export interface LoginResponse {
   isSuccess: boolean;
   message: string;
   statusCode: number;
-  response?: {
-    accessToken?: TokenResponse;
-    refreshToken?: TokenResponse;
-  };
+  response?: LoginResponseData;
   status?: number;
 }
 
