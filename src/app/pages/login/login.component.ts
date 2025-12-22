@@ -249,8 +249,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private redirectByRole(user: User): void {
-    switch (user.role) {
+  private redirectByRole(role: "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON"): void {
+    switch (role) {
       case "ADMIN":
         this.router.navigate(["/admin/dashboard"]);
         break;
