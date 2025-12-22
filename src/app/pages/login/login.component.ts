@@ -215,7 +215,8 @@ export class LoginComponent implements OnInit {
           const role = this.extractRoleFromToken(token);
           this.redirectByRole(role);
         } else {
-          this.errorMessage = response.message || "Login failed. Please try again.";
+          this.errorMessage =
+            response.message || "Login failed. Please try again.";
         }
       },
       error: (error) => {
@@ -249,7 +250,9 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private redirectByRole(role: "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON"): void {
+  private redirectByRole(
+    role: "ADMIN" | "OWNER" | "MANAGER" | "SALESPERSON",
+  ): void {
     switch (role) {
       case "ADMIN":
         this.router.navigate(["/admin/dashboard"]);
