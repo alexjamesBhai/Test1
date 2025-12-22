@@ -50,9 +50,9 @@ export class AuthService {
     this.loadUserFromStorage();
   }
 
-  signup(signupData: SignupRequest): Observable<AuthApiResponse> {
+  signup(signupData: SignupRequest): Observable<LoginResponse> {
     return this.http
-      .post<AuthApiResponse>(`${environment.apiUrl}/Authentication`, signupData)
+      .post<LoginResponse>(`${environment.apiUrl}/Authentication`, signupData)
       .pipe(
         catchError((error) => {
           console.error("Signup failed:", error);
@@ -63,9 +63,9 @@ export class AuthService {
       );
   }
 
-  login(credentials: LoginRequest): Observable<AuthApiResponse> {
+  login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http
-      .post<AuthApiResponse>(`${environment.apiUrl}/Authentication/login`, {
+      .post<LoginResponse>(`${environment.apiUrl}/Authentication/login`, {
         username: credentials.email,
         password: credentials.password,
       })
@@ -144,7 +144,7 @@ export class AuthService {
     }
   }
 
-  refreshAccessToken(): Observable<AuthApiResponse> {
+  refreshAccessToken(): Observable<LoginResponse> {
     const accessToken = this.getAccessToken();
     const refreshToken = this.getRefreshToken();
 
@@ -154,7 +154,7 @@ export class AuthService {
     }
 
     return this.http
-      .post<AuthApiResponse>(
+      .post<LoginResponse>(
         `${environment.apiUrl}/Authentication/Refresh-Token`,
         {
           accessToken: { token: accessToken },
@@ -189,9 +189,9 @@ export class AuthService {
   changePassword(
     userName: string,
     newPassword: string,
-  ): Observable<AuthApiResponse> {
+  ): Observable<LoginResponse> {
     return this.http
-      .post<AuthApiResponse>(
+      .post<LoginResponse>(
         `${environment.apiUrl}/Authentication/ChangePassword`,
         { userName, password: newPassword },
       )
