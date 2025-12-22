@@ -248,6 +248,7 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         if (response.isSuccess && response.response?.accessToken?.token) {
+          this.saveRememberMePreference();
           const token = response.response.accessToken.token;
           const role = this.extractRoleFromToken(token);
           this.redirectByRole(role);
