@@ -5,16 +5,23 @@ import { tap, catchError } from "rxjs/operators";
 import { User, LoginRequest, AuthResponse } from "../models/user.model";
 import { environment } from "../../environments/environment";
 
-interface AuthApiResponse {
+export interface TokenResponse {
+  token: string;
+  expiryTokenDate: string;
+}
+
+export interface LoginResponse {
   isSuccess: boolean;
   message: string;
   statusCode: number;
   response?: {
-    accessToken?: { token: string; expiryTokenDate: string };
-    refreshToken?: { token: string; expiryTokenDate: string };
+    accessToken?: TokenResponse;
+    refreshToken?: TokenResponse;
   };
   status?: number;
 }
+
+interface AuthApiResponse extends LoginResponse {}
 
 interface SignupRequest {
   email: string;
