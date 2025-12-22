@@ -134,7 +134,10 @@ import { User } from "../../core/models/user.model";
                 formControlName="rememberMe"
                 class="w-4 h-4 rounded border border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
               />
-              <label for="rememberMe" class="ml-2 text-sm text-slate-700 cursor-pointer">
+              <label
+                for="rememberMe"
+                class="ml-2 text-sm text-slate-700 cursor-pointer"
+              >
                 Remember me
               </label>
             </div>
