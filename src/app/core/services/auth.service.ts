@@ -171,9 +171,9 @@ export class AuthService {
       )
       .pipe(
         tap((response) => {
-          if (response.isSuccess && response.response?.accessToken?.token) {
-            const newAccessToken = response.response.accessToken.token;
-            const newRefreshToken = response.response.refreshToken?.token;
+          if (response.isSuccess && response.response?.response?.accessToken?.token) {
+            const newAccessToken = response.response.response.accessToken.token;
+            const newRefreshToken = response.response.response.refreshToken?.token;
 
             this.setAccessToken(newAccessToken);
             if (newRefreshToken) {
