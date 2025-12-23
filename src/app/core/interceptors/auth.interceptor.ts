@@ -28,13 +28,23 @@ export class AuthInterceptor implements HttpInterceptor {
       request.url.includes("/Authentication/login") ||
       request.url.includes("/Authentication");
 
-    if (!isAuthEndpoint && token) {
-      request = this.addToken(request, token);
+    if (!isAuthEndpoint) {
+      if (token) {
+        request = this.addToken(request, token);
+      } else {
+        console.warn(
+          "[Auth Interceptor] No token found for request:",
+          request.url,
+        );
+      }
+    } else {
+      console.log("[Auth Interceptor] Skipping auth endpoint:", request.url);
     }
 
     return next.handle(request).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
+          console.error("[Auth Interceptor] 401 Unauthorized for:", request.url);
           return this.handle401Error(request, next);
         }
         return throwError(() => error);
