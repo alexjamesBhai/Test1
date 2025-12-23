@@ -1,14 +1,67 @@
 export interface Organization {
   id: string;
   name: string;
-  businessType: string;
-  ownerEmail: string;
-  isActive: boolean;
-  createdAt: Date;
-  logo?: string;
-  address?: string;
+  businessType: number;
+  businessTypeId?: number;
+  nameEn?: string;
+  nameAr?: string;
+  description?: string;
+  logoUrl?: string;
+  email?: string;
+  phone?: string;
+  whatsApp?: string;
+  website?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  postalCode?: string;
+  googleMapLink?: string;
+  ownerName?: string;
+  ownerEmail?: string;
+  ownerPhone?: string;
+  licenseStartDate?: string;
+  licenseEndDate?: string;
+  isTrial?: boolean;
+  timezone?: string;
+  currencyCode?: number;
+  allowMultiBranch?: boolean;
+  allowMultiUser?: boolean;
+  defaultLanguage?: string;
+  active?: boolean;
+  isActive?: boolean;
+  createdBy?: string;
+  createdDate?: string;
+  updatedBy?: string;
+  updatedDate?: string;
+}
+
+export interface OrganizationListItem {
+  businessTypeId: number;
+  nameEn?: string;
+  nameAr?: string;
+  id: string;
+  name: string;
+  logoUrl?: string;
   phone?: string;
   email?: string;
+  ownerName?: string;
+  ownerPhone?: string;
+}
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  totalRecords: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export interface ApiResponse<T> {
+  status: number;
+  message: string;
+  data: T;
 }
 
 export interface Product {
