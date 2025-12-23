@@ -76,11 +76,9 @@ import {
                 class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select business type</option>
-                <option [value]="1">Restaurant</option>
-                <option [value]="2">Retail</option>
-                <option [value]="3">Pharmacy</option>
-                <option [value]="4">Supermarket</option>
-                <option [value]="5">Salon</option>
+                <option *ngFor="let type of businessTypes" [value]="type.id">
+                  {{ type.name }}
+                </option>
               </select>
               <p
                 *ngIf="businessType.invalid && businessType.touched"
