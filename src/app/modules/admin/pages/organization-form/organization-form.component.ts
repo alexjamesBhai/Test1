@@ -634,12 +634,30 @@ export class OrganizationFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadMasterData();
+
     this.route.params.subscribe((params) => {
       if (params["id"]) {
         this.isEditMode = true;
         this.organizationId = params["id"];
         this.loadOrganization();
       }
+    });
+  }
+
+  private loadMasterData(): void {
+    this.isLoadingDropdowns = true;
+    this.masterDataService.getAllMasterData().subscribe({
+      next: (data) => {
+        this.businessTypes = data.businessTypes;
+        this.currencies = data.currencies;
+        this.nationalities = data.nationalities;
+        this.isLoadingDropdowns = false;
+      },
+      error: (error) => {
+        console.error("Error loading master data:", error);
+        this.isLoadingDropdowns = false;
+      },
     });
   }
 
