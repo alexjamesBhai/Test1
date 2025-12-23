@@ -27,10 +27,9 @@ export class OrganizationService {
       .set("pageSize", pageSize.toString());
 
     return this.http
-      .get<ApiResponse<PaginatedResponse<OrganizationListItem>>>(
-        `${this.baseUrl}/All`,
-        { params },
-      )
+      .get<
+        ApiResponse<PaginatedResponse<OrganizationListItem>>
+      >(`${this.baseUrl}/All`, { params })
       .pipe(map((response) => response.data));
   }
 

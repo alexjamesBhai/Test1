@@ -65,16 +65,43 @@ import {
       </div>
 
       <!-- Table View -->
-      <div *ngIf="!isLoading && organizations.length > 0" class="bg-white rounded-lg shadow overflow-hidden">
+      <div
+        *ngIf="!isLoading && organizations.length > 0"
+        class="bg-white rounded-lg shadow overflow-hidden"
+      >
         <table class="w-full">
           <thead class="bg-slate-100 border-b border-slate-300">
             <tr>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-slate-900">Organization Name</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-slate-900">Owner</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-slate-900">Email</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-slate-900">Phone</th>
-              <th class="px-6 py-4 text-left text-sm font-semibold text-slate-900">Business Type</th>
-              <th class="px-6 py-4 text-center text-sm font-semibold text-slate-900">Actions</th>
+              <th
+                class="px-6 py-4 text-left text-sm font-semibold text-slate-900"
+              >
+                Organization Name
+              </th>
+              <th
+                class="px-6 py-4 text-left text-sm font-semibold text-slate-900"
+              >
+                Owner
+              </th>
+              <th
+                class="px-6 py-4 text-left text-sm font-semibold text-slate-900"
+              >
+                Email
+              </th>
+              <th
+                class="px-6 py-4 text-left text-sm font-semibold text-slate-900"
+              >
+                Phone
+              </th>
+              <th
+                class="px-6 py-4 text-left text-sm font-semibold text-slate-900"
+              >
+                Business Type
+              </th>
+              <th
+                class="px-6 py-4 text-center text-sm font-semibold text-slate-900"
+              >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-200">
@@ -113,7 +140,9 @@ import {
                 {{ org.phone || "-" }}
               </td>
               <td class="px-6 py-4 text-sm">
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                <span
+                  class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700"
+                >
                   {{ getBusinessTypeName(org.businessTypeId) }}
                 </span>
               </td>
@@ -153,7 +182,9 @@ import {
       >
         <div class="text-sm text-slate-600">
           Showing
-          <span class="font-semibold">{{ (currentPage - 1) * pageSize + 1 }}</span>
+          <span class="font-semibold">{{
+            (currentPage - 1) * pageSize + 1
+          }}</span>
           to
           <span class="font-semibold">{{
             Math.min(currentPage * pageSize, totalRecords)
@@ -234,19 +265,21 @@ export class OrganizationsGridComponent implements OnInit {
 
   loadOrganizations(): void {
     this.isLoading = true;
-    this.organizationService.getOrganizations(this.currentPage, this.pageSize).subscribe({
-      next: (response: PaginatedResponse<OrganizationListItem>) => {
-        this.organizations = response.items;
-        this.filteredOrganizations = response.items;
-        this.totalRecords = response.totalRecords;
-        this.totalPages = response.totalPages;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error("Error loading organizations:", error);
-        this.isLoading = false;
-      },
-    });
+    this.organizationService
+      .getOrganizations(this.currentPage, this.pageSize)
+      .subscribe({
+        next: (response: PaginatedResponse<OrganizationListItem>) => {
+          this.organizations = response.items;
+          this.filteredOrganizations = response.items;
+          this.totalRecords = response.totalRecords;
+          this.totalPages = response.totalPages;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error("Error loading organizations:", error);
+          this.isLoading = false;
+        },
+      });
   }
 
   onSearchChange(): void {
@@ -293,7 +326,10 @@ export class OrganizationsGridComponent implements OnInit {
   getPageNumbers(): number[] {
     const pages: number[] = [];
     const maxPagesToShow = 5;
-    let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
+    let startPage = Math.max(
+      1,
+      this.currentPage - Math.floor(maxPagesToShow / 2),
+    );
     const endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
 
     if (endPage - startPage < maxPagesToShow - 1) {

@@ -21,9 +21,11 @@ import { Organization } from "../../../../core/models/organization.model";
           {{ isEditMode ? "Edit Organization" : "Create Organization" }}
         </h1>
         <p class="text-slate-600 mt-2">
-          {{ isEditMode
-            ? "Update organization details"
-            : "Add a new business organization" }}
+          {{
+            isEditMode
+              ? "Update organization details"
+              : "Add a new business organization"
+          }}
         </p>
       </div>
 
@@ -493,7 +495,10 @@ import { Organization } from "../../../../core/models/organization.model";
                 formControlName="allowMultiBranch"
                 class="w-4 h-4 rounded border border-slate-300"
               />
-              <label for="allowMultiBranch" class="text-sm text-slate-700 cursor-pointer">
+              <label
+                for="allowMultiBranch"
+                class="text-sm text-slate-700 cursor-pointer"
+              >
                 Allow Multiple Branches
               </label>
             </div>
@@ -505,7 +510,10 @@ import { Organization } from "../../../../core/models/organization.model";
                 formControlName="allowMultiUser"
                 class="w-4 h-4 rounded border border-slate-300"
               />
-              <label for="allowMultiUser" class="text-sm text-slate-700 cursor-pointer">
+              <label
+                for="allowMultiUser"
+                class="text-sm text-slate-700 cursor-pointer"
+              >
                 Allow Multiple Users
               </label>
             </div>
@@ -517,7 +525,10 @@ import { Organization } from "../../../../core/models/organization.model";
                 formControlName="isTrial"
                 class="w-4 h-4 rounded border border-slate-300"
               />
-              <label for="isTrial" class="text-sm text-slate-700 cursor-pointer">
+              <label
+                for="isTrial"
+                class="text-sm text-slate-700 cursor-pointer"
+              >
                 Trial Account
               </label>
             </div>
@@ -531,7 +542,10 @@ import { Organization } from "../../../../core/models/organization.model";
               formControlName="isActive"
               class="w-4 h-4 rounded border border-slate-300"
             />
-            <label for="isActive" class="text-sm font-semibold text-slate-700 cursor-pointer">
+            <label
+              for="isActive"
+              class="text-sm font-semibold text-slate-700 cursor-pointer"
+            >
               Active
             </label>
           </div>
@@ -551,7 +565,13 @@ import { Organization } from "../../../../core/models/organization.model";
             [disabled]="organizationForm.invalid || isSubmitting"
             class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 text-white rounded-lg font-semibold transition"
           >
-            {{ isSubmitting ? "Saving..." : isEditMode ? "Update Organization" : "Create Organization" }}
+            {{
+              isSubmitting
+                ? "Saving..."
+                : isEditMode
+                  ? "Update Organization"
+                  : "Create Organization"
+            }}
           </button>
         </div>
       </form>
@@ -631,7 +651,10 @@ export class OrganizationFormComponent implements OnInit {
     const formData = this.organizationForm.value;
 
     const request = this.isEditMode
-      ? this.organizationService.updateOrganization(this.organizationId || "", formData)
+      ? this.organizationService.updateOrganization(
+          this.organizationId || "",
+          formData,
+        )
       : this.organizationService.createOrganization(formData);
 
     request.subscribe({
@@ -646,21 +669,55 @@ export class OrganizationFormComponent implements OnInit {
     });
   }
 
-  get name() { return this.organizationForm.get("name")!; }
-  get businessType() { return this.organizationForm.get("businessType")!; }
-  get email() { return this.organizationForm.get("email")!; }
-  get phone() { return this.organizationForm.get("phone")!; }
-  get ownerName() { return this.organizationForm.get("ownerName")!; }
-  get ownerEmail() { return this.organizationForm.get("ownerEmail")!; }
-  get ownerPhone() { return this.organizationForm.get("ownerPhone")!; }
-  get addressLine1() { return this.organizationForm.get("addressLine1")!; }
-  get city() { return this.organizationForm.get("city")!; }
-  get state() { return this.organizationForm.get("state")!; }
-  get country() { return this.organizationForm.get("country")!; }
-  get postalCode() { return this.organizationForm.get("postalCode")!; }
-  get licenseStartDate() { return this.organizationForm.get("licenseStartDate")!; }
-  get licenseEndDate() { return this.organizationForm.get("licenseEndDate")!; }
-  get timezone() { return this.organizationForm.get("timezone")!; }
-  get currencyCode() { return this.organizationForm.get("currencyCode")!; }
-  get defaultLanguage() { return this.organizationForm.get("defaultLanguage")!; }
+  get name() {
+    return this.organizationForm.get("name")!;
+  }
+  get businessType() {
+    return this.organizationForm.get("businessType")!;
+  }
+  get email() {
+    return this.organizationForm.get("email")!;
+  }
+  get phone() {
+    return this.organizationForm.get("phone")!;
+  }
+  get ownerName() {
+    return this.organizationForm.get("ownerName")!;
+  }
+  get ownerEmail() {
+    return this.organizationForm.get("ownerEmail")!;
+  }
+  get ownerPhone() {
+    return this.organizationForm.get("ownerPhone")!;
+  }
+  get addressLine1() {
+    return this.organizationForm.get("addressLine1")!;
+  }
+  get city() {
+    return this.organizationForm.get("city")!;
+  }
+  get state() {
+    return this.organizationForm.get("state")!;
+  }
+  get country() {
+    return this.organizationForm.get("country")!;
+  }
+  get postalCode() {
+    return this.organizationForm.get("postalCode")!;
+  }
+  get licenseStartDate() {
+    return this.organizationForm.get("licenseStartDate")!;
+  }
+  get licenseEndDate() {
+    return this.organizationForm.get("licenseEndDate")!;
+  }
+  get timezone() {
+    return this.organizationForm.get("timezone")!;
+  }
+  get currencyCode() {
+    return this.organizationForm.get("currencyCode")!;
+  }
+  get defaultLanguage() {
+    return this.organizationForm.get("defaultLanguage")!;
+  }
 }
