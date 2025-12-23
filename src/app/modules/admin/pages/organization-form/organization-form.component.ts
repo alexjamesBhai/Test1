@@ -444,11 +444,10 @@ import {
                 class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select currency</option>
-                <option [value]="1">USD</option>
-                <option [value]="2">OMR</option>
-                <option [value]="3">AED</option>
-                <option [value]="4">SAR</option>
-                <option [value]="5">EUR</option>
+                <option *ngFor="let currency of currencies" [value]="currency.id">
+                  {{ currency.name }}
+                  <span *ngIf="currency.description">({{ currency.description }})</span>
+                </option>
               </select>
               <p
                 *ngIf="currencyCode.invalid && currencyCode.touched"
