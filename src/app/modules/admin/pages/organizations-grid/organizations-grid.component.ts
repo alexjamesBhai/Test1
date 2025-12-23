@@ -224,6 +224,7 @@ export class OrganizationsGridComponent implements OnInit {
   private searchTimeout: any;
 
   readonly Math = Math;
+  private router = inject(Router);
 
   constructor(private organizationService: OrganizationService) {}
 
