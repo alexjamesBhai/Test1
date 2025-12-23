@@ -43,11 +43,13 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
-    return request.clone({
+    const modifiedRequest = request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log("[Auth Interceptor] Adding token to request:", request.url);
+    return modifiedRequest;
   }
 
   private handle401Error(
