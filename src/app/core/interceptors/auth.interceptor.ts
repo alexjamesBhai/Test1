@@ -23,12 +23,12 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     const token = this.authService.getAccessToken();
 
-    // Don't add token to login and signup endpoints
-    if (
-      !request.url.includes("/Authentication/login") &&
-      !request.url.includes("/Authentication") &&
-      token
-    ) {
+    // Add token to all requests except login and signup
+    const isAuthEndpoint =
+      request.url.includes("/Authentication/login") ||
+      request.url.includes("/Authentication");
+
+    if (!isAuthEndpoint && token) {
       request = this.addToken(request, token);
     }
 
