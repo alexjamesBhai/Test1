@@ -315,12 +315,15 @@ import {
               <label class="block text-sm font-semibold text-slate-700 mb-2">
                 Country <span class="text-red-500">*</span>
               </label>
-              <input
-                type="text"
+              <select
                 formControlName="country"
-                placeholder="Country"
                 class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              >
+                <option value="">Select country</option>
+                <option *ngFor="let nation of nationalities" [value]="nation.name">
+                  {{ nation.name }} ({{ nation.tag }})
+                </option>
+              </select>
               <p
                 *ngIf="country.invalid && country.touched"
                 class="text-red-500 text-xs mt-1"
