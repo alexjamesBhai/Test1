@@ -307,14 +307,14 @@ export class OrganizationsGridComponent implements OnInit {
   }
 
   openCreateForm(): void {
-    console.log("Open create form");
-    // Navigate to create form or open modal
+    this.router.navigate(["/admin/organizations/new"]);
   }
 
   editOrganization(id: string): void {
-    console.log("Edit organization:", id);
-    // Navigate to edit form or open modal
+    this.router.navigate(["/admin/organizations", id, "edit"]);
   }
+
+  private router = inject(Router);
 
   deleteOrganization(id: string): void {
     if (confirm("Are you sure you want to delete this organization?")) {
