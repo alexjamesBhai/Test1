@@ -320,7 +320,10 @@ import {
                 class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select country</option>
-                <option *ngFor="let nation of nationalities" [value]="nation.name">
+                <option
+                  *ngFor="let nation of nationalities"
+                  [value]="nation.name"
+                >
                   {{ nation.name }} ({{ nation.tag }})
                 </option>
               </select>
@@ -444,9 +447,14 @@ import {
                 class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select currency</option>
-                <option *ngFor="let currency of currencies" [value]="currency.id">
+                <option
+                  *ngFor="let currency of currencies"
+                  [value]="currency.id"
+                >
                   {{ currency.name }}
-                  <span *ngIf="currency.description">({{ currency.description }})</span>
+                  <span *ngIf="currency.description"
+                    >({{ currency.description }})</span
+                  >
                 </option>
               </select>
               <p

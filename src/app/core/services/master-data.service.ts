@@ -22,9 +22,7 @@ export class MasterDataService {
   }
 
   getBusinessTypes(): Observable<BusinessType[]> {
-    return this.http.get<BusinessType[]>(
-      `${this.baseUrl}/MasterCodes?type=1`,
-    );
+    return this.http.get<BusinessType[]>(`${this.baseUrl}/MasterCodes?type=1`);
   }
 
   getCurrencies(): Observable<Currency[]> {
