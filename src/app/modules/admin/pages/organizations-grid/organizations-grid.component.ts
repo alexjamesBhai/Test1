@@ -315,8 +315,6 @@ export class OrganizationsGridComponent implements OnInit {
     this.router.navigate(["/admin/organizations", id, "edit"]);
   }
 
-  private router = inject(Router);
-
   deleteOrganization(id: string): void {
     if (confirm("Are you sure you want to delete this organization?")) {
       this.organizationService.deleteOrganization(id).subscribe({
