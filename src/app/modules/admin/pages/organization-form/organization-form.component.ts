@@ -588,11 +588,17 @@ export class OrganizationFormComponent implements OnInit {
   organizationForm: FormGroup;
   isEditMode = false;
   isSubmitting = false;
+  isLoadingDropdowns = false;
   private organizationId?: string;
+
+  businessTypes: BusinessType[] = [];
+  currencies: Currency[] = [];
+  nationalities: Nationality[] = [];
 
   constructor(
     private fb: FormBuilder,
     private organizationService: OrganizationService,
+    private masterDataService: MasterDataService,
     private router: Router,
     private route: ActivatedRoute,
   ) {
