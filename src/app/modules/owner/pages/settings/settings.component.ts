@@ -87,7 +87,7 @@ import { Organization } from "../../../../core/models/organization.model";
             >
             <input
               type="text"
-              formControlName="address"
+              formControlName="addressLine1"
               class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -171,7 +171,7 @@ export class OwnerSettingsComponent implements OnInit {
       businessType: [""],
       email: ["", Validators.email],
       phone: [""],
-      address: [""],
+      addressLine1: [""],
     });
 
     this.passwordForm = this.fb.group({
@@ -198,7 +198,7 @@ export class OwnerSettingsComponent implements OnInit {
           businessType: org.businessType,
           email: org.email,
           phone: org.phone,
-          address: org.address,
+          addressLine1: org.addressLine1,
         });
       },
     });
