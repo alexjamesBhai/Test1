@@ -23,22 +23,16 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     const token = this.authService.getAccessToken();
 
-    // Add token to all requests except login and signup
-    const isAuthEndpoint =
-      request.url.includes("/Authentication/login") ||
-      request.url.includes("/Authentication");
+    // Only skip token for login endpoint - add token to ALL other requests
+    const isLoginEndpoint = request.url.includes("/Authentication/login");
 
-    if (!isAuthEndpoint) {
-      if (token) {
-        request = this.addToken(request, token);
-      } else {
-        console.warn(
-          "[Auth Interceptor] No token found for request:",
-          request.url,
-        );
-      }
-    } else {
-      console.log("[Auth Interceptor] Skipping auth endpoint:", request.url);
+    if (!isLoginEndpoint && token) {
+      request = this.addToken(request, token);
+    } else if (!isLoginEndpoint && !token) {
+      console.warn(
+        "[Auth Interceptor] No token available for request:",
+        request.url,
+      );
     }
 
     return next.handle(request).pipe(
