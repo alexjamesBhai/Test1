@@ -50,12 +50,17 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
+    const bearerToken = `Bearer ${token}`;
     const modifiedRequest = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`,
+        Authorization: bearerToken,
       },
     });
-    console.log("[Auth Interceptor] Adding token to request:", request.url);
+    console.log("[Auth Interceptor] Adding Bearer token to request:", {
+      url: request.url,
+      tokenLength: token.length,
+      bearerTokenPreview: bearerToken.substring(0, 20) + "...",
+    });
     return modifiedRequest;
   }
 
