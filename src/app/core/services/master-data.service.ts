@@ -25,11 +25,19 @@ export class MasterDataService {
 
   getNationalities(): Observable<Nationality[]> {
     const token = this.authService.getAccessToken();
-    console.log("[MasterDataService] Fetching Nationalities. Token available:", !!token);
+    console.log(
+      "[MasterDataService] Fetching Nationalities. Token available:",
+      !!token,
+    );
     return this.http.get<Nationality[]>(`${this.baseUrl}/Nationalities`).pipe(
-      tap(() => console.log("[MasterDataService] Nationalities fetched successfully")),
+      tap(() =>
+        console.log("[MasterDataService] Nationalities fetched successfully"),
+      ),
       catchError((error) => {
-        console.error("[MasterDataService] Error fetching Nationalities:", error);
+        console.error(
+          "[MasterDataService] Error fetching Nationalities:",
+          error,
+        );
         return throwError(() => error);
       }),
     );
@@ -37,21 +45,36 @@ export class MasterDataService {
 
   getBusinessTypes(): Observable<BusinessType[]> {
     const token = this.authService.getAccessToken();
-    console.log("[MasterDataService] Fetching BusinessTypes. Token available:", !!token);
-    return this.http.get<BusinessType[]>(`${this.baseUrl}/MasterCodes?type=1`).pipe(
-      tap(() => console.log("[MasterDataService] BusinessTypes fetched successfully")),
-      catchError((error) => {
-        console.error("[MasterDataService] Error fetching BusinessTypes:", error);
-        return throwError(() => error);
-      }),
+    console.log(
+      "[MasterDataService] Fetching BusinessTypes. Token available:",
+      !!token,
     );
+    return this.http
+      .get<BusinessType[]>(`${this.baseUrl}/MasterCodes?type=1`)
+      .pipe(
+        tap(() =>
+          console.log("[MasterDataService] BusinessTypes fetched successfully"),
+        ),
+        catchError((error) => {
+          console.error(
+            "[MasterDataService] Error fetching BusinessTypes:",
+            error,
+          );
+          return throwError(() => error);
+        }),
+      );
   }
 
   getCurrencies(): Observable<Currency[]> {
     const token = this.authService.getAccessToken();
-    console.log("[MasterDataService] Fetching Currencies. Token available:", !!token);
+    console.log(
+      "[MasterDataService] Fetching Currencies. Token available:",
+      !!token,
+    );
     return this.http.get<Currency[]>(`${this.baseUrl}/MasterCodes?type=2`).pipe(
-      tap(() => console.log("[MasterDataService] Currencies fetched successfully")),
+      tap(() =>
+        console.log("[MasterDataService] Currencies fetched successfully"),
+      ),
       catchError((error) => {
         console.error("[MasterDataService] Error fetching Currencies:", error);
         return throwError(() => error);
